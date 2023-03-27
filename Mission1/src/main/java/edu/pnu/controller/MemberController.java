@@ -14,7 +14,7 @@ import edu.pnu.service.MemberService;
 
 @RestController
 public class MemberController {
-	MemberService a;
+	private MemberService a;
 	
 	public MemberController() {
 		a = new MemberService();

@@ -8,12 +8,13 @@ import edu.pnu.MemberVO;
 
 public class MemberService {
 	
-	List<MemberVO> list = new ArrayList<>();
+	private List<MemberVO> list;
 	
 	public MemberService() {
-		list.add(new MemberVO(1, "1234", "홍길동", new Date()));
-		list.add(new MemberVO(2, "1235", "홍이동", new Date()));
-		list.add(new MemberVO(3, "1236", "홍삼동", new Date()));
+		list = new ArrayList<>();
+		for (int i = 1 ; i <= 5 ; i++) {
+			list.add(new MemberVO(i, "1234", "이름"+i, new Date()));
+		}
 	}
 	
 	public List<MemberVO> getMembers() {
@@ -30,6 +31,8 @@ public class MemberService {
 	}
 	
 	public MemberVO addMember(MemberVO memberVO) {
+		memberVO.setId(list.size()+1);
+		memberVO.setRegidate(new Date());
 		list.add(memberVO);
 		return memberVO;
 	}
