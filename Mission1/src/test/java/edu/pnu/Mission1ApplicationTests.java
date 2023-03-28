@@ -8,6 +8,7 @@ class Mission1ApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("이것은 테스트입니다.");
 	}
 
 }
