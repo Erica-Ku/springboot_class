@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.pnu.MemberVO;
+import edu.pnu.domain.MemberVO;
 
 public class MemberService {
-	
+
 	private List<MemberVO> list;
 	
 	public MemberService() {
@@ -20,38 +20,36 @@ public class MemberService {
 	public List<MemberVO> getMembers() {
 		return list;
 	}
-	
+
 	public MemberVO getMember(Integer id) {
 		for (MemberVO m : list) {
-			if (m.getId()==id) {
+			if (m.getId() == id)
 				return m;
-			}
 		}
-	    return null;
-	}
-	
-	public MemberVO addMember(MemberVO memberVO) {
-		memberVO.setId(list.size()+1);
-		memberVO.setRegidate(new Date());
-		list.add(memberVO);
-		return memberVO;
-	}
-	
-	public MemberVO updateMembers(MemberVO memberVO) {
-		for (MemberVO m : list) {
-			if (m.getId()==memberVO.getId()) {
-				m.setName(memberVO.getName());
-				m.setPass(memberVO.getPass());
-				return m;
-			}
-		}
-		
 		return null;
 	}
 	
-	public MemberVO removeMember(Integer id) {
+	public MemberVO addMember(MemberVO member) {
+		member.setId(list.size() + 1);
+		member.setRegidate(new Date());
+		list.add(member);
+		return member;
+	}
+
+	public MemberVO updateMember(MemberVO member) {
 		for (MemberVO m : list) {
-			if (m.getId()==id) {
+			if (m.getId() == member.getId()) {
+				m.setName(member.getName());
+				m.setPass(member.getPass());
+				return m;
+			}
+		}
+		return null;
+	}
+
+	public MemberVO deleteMember(Integer id) {
+		for (MemberVO m : list) {
+			if (m.getId() == id) {
 				list.remove(m);
 				return m;
 			}

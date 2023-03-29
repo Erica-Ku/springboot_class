@@ -11,49 +11,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.pnu.MemberVO;
+import edu.pnu.domain.MemberVO;
 import edu.pnu.service.MemberService;
 
 @RestController
 public class MemberController {
+
 	private MemberService memberService;
 	
 	private static final Logger log = LoggerFactory.getLogger(MemberController.class);
 	
 	public MemberController() {
-		log.info("MemberController 생성자 호출");
-		
-		log.error("Error Message");
-		log.warn("Warn Message");
-		log.info("Info Message");
-		log.debug("Debug Message");
-		log.trace("Trace Message");
-		
 		memberService = new MemberService();
 	}
 	
 	@GetMapping("/member")
-	public List<MemberVO> members() {
+	public List<MemberVO> getMembers() {
+		log.info("getMembers()");
 		return memberService.getMembers();
 	}
-	
+
 	@GetMapping("/member/{id}")
-	public MemberVO member(@PathVariable Integer id) {
+	public MemberVO getMember(@PathVariable Integer id) {
+		log.info("getMember()");
 		return memberService.getMember(id);
 	}
 	
 	@PostMapping("/member")
-	public MemberVO addmember(MemberVO memberVO) {
-		return memberService.addMember(memberVO);
+	public MemberVO addMember(MemberVO member) {
+		log.info("addMember()");
+		return memberService.addMember(member);
 	}
-	
+
 	@PutMapping("/member")
-	public MemberVO updatemembers(MemberVO memberVO) {
-		return memberService.updateMembers(memberVO);
+	public MemberVO updateMember(MemberVO member) {
+		log.info("updateMember()");
+		return memberService.updateMember(member);
 	}
 	
 	@DeleteMapping("/member/{id}")
-	public MemberVO removemember(@PathVariable Integer id) {
-		return memberService.removeMember(id);
+	public MemberVO deleteMember(@PathVariable Integer id) {
+		log.info("deleteMember()");
+		return memberService.deleteMember(id);
 	}
 }

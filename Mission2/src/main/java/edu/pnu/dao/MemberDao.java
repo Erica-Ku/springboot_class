@@ -1,124 +1,173 @@
 package edu.pnu.dao;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.pnu.domain.MemberVO;
 
 public class MemberDao {
-	public Connection con;
-	public Statement stmt;
-	public PreparedStatement psmt;
-	public ResultSet rs;
+	private Connection con = null;
 	
 	public MemberDao() {
-		try {
-			// JDBC 드라이버 로드
-			Class.forName("org.h2.Driver");
-			
-			// DB에 연결
-			String url = "jdbc:h2:tcp://localhost/~/springboot";
-			String id = "sa";
-			String pwd = "";
-			con = DriverManager.getConnection(url, id, pwd);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            // JDBC 드라이버 로드
+            Class.forName("org.h2.Driver");
+            
+            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/springboot", "sa", "");
+        }
+        catch (Exception e) {            
+            e.printStackTrace();
+        }
 	}
-
+	
 	public List<MemberVO> getMembers() {
-		List<MemberVO> memberVO = new ArrayList<>();
-		String query = "SELECT * FROM member";
+		Statement st = null;
+		ResultSet rs = null;
+		List<MemberVO> list = new ArrayList<>();
 		try {
-			psmt = con.prepareStatement(query);
-			rs = psmt.executeQuery();
-			
-			while (rs.next()) {
-				MemberVO mb = new MemberVO();
-				mb.setId(rs.getInt(1));
-				mb.setPass(rs.getString(2));
-				mb.setName(rs.getString(3));
-				mb.setRegidate(rs.getDate(4));
-				
-				memberVO.add(mb);
+			st = con.createStatement();
+			rs = st.executeQuery("select * from member order by id asc");
+			while(rs.next() ) {
+				MemberVO m = new MemberVO();
+				m.setId(rs.getInt("id"));
+				m.setPass(rs.getString("pass"));
+				m.setName(rs.getString("name"));
+				m.setRegidate(rs.getDate("regidate"));
+				list.add(m);
 			}
 		} catch (Exception e) {
-			System.out.println("member 조회 중 예외 발생");
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return memberVO;
+		return list;
 	}
 
 	public MemberVO getMember(Integer id) {
-		MemberVO memberVO = new MemberVO();
-		String query = "SELECT * FROM member WHERE id=?";
+		PreparedStatement st = null;
+		ResultSet rs = null;
 		try {
-			psmt = con.prepareStatement(query);
-			psmt.setInt(1, id);
-			rs = psmt.executeQuery();
-			if (rs.next()) {
-				memberVO.setId(rs.getInt(1));
-				memberVO.setPass(rs.getString(2));
-				memberVO.setName(rs.getString(3));
-				memberVO.setRegidate(rs.getDate(4));
+			st = con.prepareStatement("select * from member where id=?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			rs.next();
+			MemberVO m = new MemberVO();
+			m.setId(rs.getInt("id"));
+			m.setPass(rs.getString("pass"));
+			m.setName(rs.getString("name"));
+			m.setRegidate(rs.getDate("regidate"));
+			return m;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			System.out.println("특정 member 조회 중 예외 발생");
-			e.printStackTrace();
 		}
-		return memberVO;
+		return null;
 	}
-
-	public MemberVO addMember(MemberVO memberVO) {
+	
+	private int getNextId() {
+		Statement st = null;
+		ResultSet rs = null;
 		try {
-			String query = "INSERT INTO member ( "
-						+ " id, pass, name) "
-						+ " VALUES ( "
-						+ " ?, ?, ?)";
-			psmt = con.prepareStatement(query);
-			psmt.setInt(1, memberVO.getId());
-			psmt.setString(2, memberVO.getPass());
-			psmt.setString(3, memberVO.getName());
-			int rs = psmt.executeUpdate();
+			st = con.createStatement();
+			rs = st.executeQuery("select max(id) from member");
+			rs.next();
+			return rs.getInt(1) + 1;
 		} catch (Exception e) {
-			System.out.println("member 입력 중 예외 발생");
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return memberVO;
+		return 1;		
 	}
-
-	public MemberVO updateMembers(MemberVO memberVO) {
+	
+	public MemberVO addMember(MemberVO member) {
+		
+		int id = getNextId();
+		
+		PreparedStatement st = null;
 		try {
-			String query = "UPDATE member SET "
-						+ " pass=?, name=? "
-						+ " WHERE id=?";
+			st = con.prepareStatement("insert into member (id,name,pass,regidate) values (?,?,?,?)");
+			st.setInt(1, id);
+			st.setString(2, member.getName());
+			st.setString(3, member.getPass());
+			st.setDate(4, new Date(System.currentTimeMillis()));
+			st.executeUpdate();
 
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, memberVO.getPass());
-			psmt.setString(2, memberVO.getName());
-			psmt.setInt(3, memberVO.getId());
-			int rs = psmt.executeUpdate();
+			return getMember(id);
 		} catch (Exception e) {
-			System.out.println("member 수정 중 예외 발생");
 			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return memberVO;
+		return null;
 	}
 
-	public MemberVO removeMember(Integer id) {
-		MemberVO memberVO = new MemberVO();
+	public MemberVO updateMember(MemberVO member) {
+		PreparedStatement st = null;
 		try {
-			String query = "DELETE FROM member WHERE id=?";
-			
-			psmt = con.prepareStatement(query);
-			psmt.setInt(1, memberVO.getId());
-			
-			int rs = psmt.executeUpdate();
+			st = con.prepareStatement("update member set name=?,pass=? where id=?");
+			st.setString(1, member.getName());
+			st.setString(2, member.getPass());
+			st.setInt(3, member.getId());
+			st.executeUpdate();
+
+			return getMember(member.getId());
 		} catch (Exception e) {
-			System.out.println("member 삭제 중 예외 발생");
 			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return memberVO;
+		return null;
 	}
+
+	public boolean deleteMember(Integer id) {
+		PreparedStatement st = null;
+		try {
+			st = con.prepareStatement("delete from member where id=?");
+			st.setInt(1, id);
+			if (st.executeUpdate() == 1)
+				return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 }
