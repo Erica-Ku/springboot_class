@@ -1,6 +1,7 @@
 package edu.pnu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import edu.pnu.domain.MemberVO;
 

@@ -8,7 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.pnu.domain.MemberVO;
 
@@ -28,13 +30,14 @@ public class MemberDaoH2Impl implements MemberDao {
 	}
 	
 	@Override
-	public List<MemberVO> getMembers() {
+	public Map<String, Object> getMembers() {
 		Statement st = null;
 		ResultSet rs = null;
-		List<MemberVO> list = new ArrayList<>();
+		String sql = "select * from member order by id asc";
 		try {
+			List<MemberVO> list = new ArrayList<>();
 			st = con.createStatement();
-			rs = st.executeQuery("select * from member order by id asc");
+			rs = st.executeQuery(sql);
 			while(rs.next() ) {
 				MemberVO m = new MemberVO();
 				m.setId(rs.getInt("id"));
@@ -43,6 +46,10 @@ public class MemberDaoH2Impl implements MemberDao {
 				m.setRegidate(rs.getDate("regidate"));
 				list.add(m);
 			}
+			Map<String, Object> map = new HashMap();
+			map.put("sql", sql);
+			map.put("data", list);
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -53,15 +60,16 @@ public class MemberDaoH2Impl implements MemberDao {
 				e.printStackTrace();
 			}
 		}
-		return list;
+		return null;
 	}
 
 	@Override
-	public MemberVO getMember(Integer id) {
+	public Map<String, Object> getMember(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		String sql = "select * from member where id=?";
 		try {
-			st = con.prepareStatement("select * from member where id=?");
+			st = con.prepareStatement(sql);
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			rs.next();
@@ -70,7 +78,10 @@ public class MemberDaoH2Impl implements MemberDao {
 			m.setPass(rs.getString("pass"));
 			m.setName(rs.getString("name"));
 			m.setRegidate(rs.getDate("regidate"));
-			return m;
+			Map<String, Object> map = new HashMap();
+			map.put("sql", sql);
+			map.put("data", m);
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -106,20 +117,29 @@ public class MemberDaoH2Impl implements MemberDao {
 	}
 	
 	@Override
-	public MemberVO addMember(MemberVO member) {
-		
+	public Map<String, Object> addMember(MemberVO member) {
 		int id = getNextId();
-		
 		PreparedStatement st = null;
+		String sql = "insert into member (id,name,pass,regidate) values (?,?,?,?)";
 		try {
-			st = con.prepareStatement("insert into member (id,name,pass,regidate) values (?,?,?,?)");
+			st = con.prepareStatement(sql);
 			st.setInt(1, id);
 			st.setString(2, member.getName());
 			st.setString(3, member.getPass());
 			st.setDate(4, new Date(System.currentTimeMillis()));
 			st.executeUpdate();
-
-			return getMember(id);
+			
+			MemberVO m = new MemberVO();
+			m.setId(id);
+			m.setName(member.getName());
+			m.setPass(member.getPass());
+			m.setRegidate(new Date(System.currentTimeMillis()));
+			
+			Map<String, Object> map = new HashMap();
+			map.put("sql", sql);
+			map.put("data", m);
+			return map;
+			//return getMember(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -133,16 +153,26 @@ public class MemberDaoH2Impl implements MemberDao {
 	}
 
 	@Override
-	public MemberVO updateMember(MemberVO member) {
+	public Map<String, Object> updateMember(MemberVO member) {
 		PreparedStatement st = null;
+		String sql = "update member set name=?,pass=? where id=?";
 		try {
-			st = con.prepareStatement("update member set name=?,pass=? where id=?");
+			st = con.prepareStatement(sql);
 			st.setString(1, member.getName());
 			st.setString(2, member.getPass());
 			st.setInt(3, member.getId());
 			st.executeUpdate();
 
-			return getMember(member.getId());
+			MemberVO m = new MemberVO();
+			m.setId(member.getId());
+			m.setPass(member.getPass());
+			m.setName(member.getName());
+			
+			Map<String, Object> map = new HashMap();
+			map.put("sql", sql);
+			map.put("data", m);
+			return map;
+			//return getMember(member.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -156,13 +186,19 @@ public class MemberDaoH2Impl implements MemberDao {
 	}
 
 	@Override
-	public boolean deleteMember(Integer id) {
+	public Map<String, Object> deleteMember(Integer id) {
 		PreparedStatement st = null;
+		String sql = "delete from member where id=?";
 		try {
-			st = con.prepareStatement("delete from member where id=?");
+			st = con.prepareStatement(sql);
 			st.setInt(1, id);
-			if (st.executeUpdate() == 1)
-				return true;
+			st.executeUpdate();
+			
+			Map<String, Object> map = new HashMap();
+			map.put("sql", sql);
+			
+			return map;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -172,7 +208,6 @@ public class MemberDaoH2Impl implements MemberDao {
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return null;
 	}
-
 }
