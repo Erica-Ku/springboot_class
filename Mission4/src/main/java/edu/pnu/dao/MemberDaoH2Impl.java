@@ -46,7 +46,7 @@ public class MemberDaoH2Impl implements MemberDao {
 				m.setRegidate(rs.getDate("regidate"));
 				list.add(m);
 			}
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			map.put("sql", sql);
 			map.put("data", list);
 			return map;
@@ -78,7 +78,7 @@ public class MemberDaoH2Impl implements MemberDao {
 			m.setPass(rs.getString("pass"));
 			m.setName(rs.getString("name"));
 			m.setRegidate(rs.getDate("regidate"));
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			map.put("sql", sql);
 			map.put("data", m);
 			return map;
@@ -135,7 +135,7 @@ public class MemberDaoH2Impl implements MemberDao {
 			m.setPass(member.getPass());
 			m.setRegidate(new Date(System.currentTimeMillis()));
 			
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			map.put("sql", sql);
 			map.put("data", m);
 			return map;
@@ -168,7 +168,7 @@ public class MemberDaoH2Impl implements MemberDao {
 			m.setPass(member.getPass());
 			m.setName(member.getName());
 			
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			map.put("sql", sql);
 			map.put("data", m);
 			return map;
@@ -194,7 +194,7 @@ public class MemberDaoH2Impl implements MemberDao {
 			st.setInt(1, id);
 			st.executeUpdate();
 			
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			map.put("sql", sql);
 			
 			return map;

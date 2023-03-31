@@ -10,9 +10,9 @@ public class LogDaoFileImpl implements LogDao {
 	public void addLog(String method, String sql, boolean success) {	
 		try {
 			fileWriter = new FileWriter("test.txt");
-			fileWriter.write(method);
-			fileWriter.write(sql);
-			fileWriter.write(String.valueOf(success));
+			fileWriter.append(method);
+			fileWriter.append(sql);
+			fileWriter.append(String.valueOf(success));
 			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();

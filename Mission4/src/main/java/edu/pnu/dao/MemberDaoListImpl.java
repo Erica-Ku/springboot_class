@@ -21,7 +21,7 @@ public class MemberDaoListImpl implements MemberDao {
 	
 	@Override
 	public Map<String, Object> getMembers() {
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		String sql = "멤버 확인";
 		map.put("sql", sql);
 		map.put("data", list);
@@ -31,7 +31,7 @@ public class MemberDaoListImpl implements MemberDao {
 	@Override
 	public Map<String, Object> getMember(Integer id) {
 		String sql = "특정 멤버 확인";
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		for (MemberVO m : list) {
 			if (m.getId() == id) {
 				map.put("sql", sql);
@@ -49,7 +49,7 @@ public class MemberDaoListImpl implements MemberDao {
 		list.add(member);
 		
 		String sql = "멤버 추가";
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("sql", sql);
 		map.put("data", member);
 		return map;
@@ -58,7 +58,7 @@ public class MemberDaoListImpl implements MemberDao {
 	@Override
 	public Map<String, Object> updateMember(MemberVO member) {
 		String sql = "멤버 수정";
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		for (MemberVO m : list) {
 			if (m.getId() == member.getId()) {
 				m.setName(member.getName());
@@ -75,7 +75,7 @@ public class MemberDaoListImpl implements MemberDao {
 	@Override
 	public Map<String, Object> deleteMember(Integer id) {
 		String sql = "멤버 삭제";
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		for (MemberVO m : list) {
 			if (m.getId() == id) {
 				list.remove(m);
