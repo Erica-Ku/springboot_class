@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.pnu.domain.MemberVO;
 
-@Repository
+//@Repository
 public class MemberDaoH2Impl_jT implements MemberDao {
 	
 	@Autowired

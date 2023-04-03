@@ -12,25 +12,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import edu.pnu.domain.MemberVO;
 
-//@Repository
+@Repository
 public class MemberDaoH2Impl implements MemberDao {
-	private Connection con = null;
+	
+	@Autowired
+	private DataSource dataSource;
+	
+//	private Connection con = null;
 
 	public MemberDaoH2Impl() {
+//		try {
+//            Class.forName("org.h2.Driver");
+//            
+//            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/springboot", "sa", "");
+//        }
+//        catch (Exception e) {            
+//            e.printStackTrace();
+//        }
+	}
+	
+	public Connection getConnection() {
+		Connection tcon = null;
 		try {
-            Class.forName("org.h2.Driver");
-            
-            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/springboot", "sa", "");
-        }
-        catch (Exception e) {            
-            e.printStackTrace();
-        }
+			tcon = dataSource.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tcon;
 	}
 	
 	@Override
@@ -40,7 +56,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		String sql = "select * from member order by id asc";
 		try {
 			List<MemberVO> list = new ArrayList<>();
-			st = con.createStatement();
+			st = getConnection().createStatement();
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
 				MemberVO m = new MemberVO();
@@ -73,7 +89,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		ResultSet rs = null;
 		String sql = "select * from member where id=?";
 		try {
-			st = con.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			rs.next();
@@ -103,7 +119,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		Statement st = null;
 		ResultSet rs = null;
 		try {
-			st = con.createStatement();
+			st = getConnection().createStatement();
 			rs = st.executeQuery("select max(id) from member");
 			rs.next();
 			return rs.getInt(1) + 1;
@@ -126,7 +142,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		PreparedStatement st = null;
 		String sql = "insert into member (id,name,pass,regidate) values (?,?,?,?)";
 		try {
-			st = con.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, id);
 			st.setString(2, member.getName());
 			st.setString(3, member.getPass());
@@ -161,7 +177,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		PreparedStatement st = null;
 		String sql = "update member set name=?,pass=? where id=?";
 		try {
-			st = con.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, member.getName());
 			st.setString(2, member.getPass());
 			st.setInt(3, member.getId());
@@ -194,7 +210,7 @@ public class MemberDaoH2Impl implements MemberDao {
 		PreparedStatement st = null;
 		String sql = "delete from member where id=?";
 		try {
-			st = con.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, id);
 			st.executeUpdate();
 			

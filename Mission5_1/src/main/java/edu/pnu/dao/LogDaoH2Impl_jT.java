@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class LogDaoH2Impl_jT implements LogDao {
 	private JdbcTemplate jdbcTemplate;
 
