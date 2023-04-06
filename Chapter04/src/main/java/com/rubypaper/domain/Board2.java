@@ -16,13 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@lombok.Getter
-@lombok.Setter
-@lombok.Builder
-@lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
-@lombok.ToString
-//@Entity(name = "BoardJPA")
+@Entity(name = "BoardJPA")
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "BoardJPA")
@@ -119,4 +113,52 @@ public class Board2 {
 			return new Board2(this);
 		}
 	}
+	
+	public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public String getWriter() {
+			return writer;
+		}
+
+		public void setWriter(String writer) {
+			this.writer = writer;
+		}
+
+		public String getContent() {
+			return content;
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
+
+		public Date getCreateDate() {
+			return createDate;
+		}
+
+		public void setCreateDate(Date createDate) {
+			this.createDate = createDate;
+		}
+
+		public Long getCnt() {
+			return cnt;
+		}
+
+		public void setCnt(Long cnt) {
+			this.cnt = cnt;
+		}
 }

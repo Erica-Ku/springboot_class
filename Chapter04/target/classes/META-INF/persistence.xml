@@ -19,7 +19,7 @@
 	</persistence-unit> 
 	-->
 	<persistence-unit name="Chapter04MySQL">
-		<class>com.rubypaper.domain.Board1</class>
+		<class>com.rubypaper.domain.Board2</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.user" value="musthave" />

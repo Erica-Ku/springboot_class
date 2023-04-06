@@ -23,16 +23,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Entity(name = "BoardJPA")
-@DynamicInsert
-@DynamicUpdate
-@Table(name = "BoardJPA")
+//@Getter
+//@Setter
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@ToString
+//@Entity(name = "BoardJPA")
+//@DynamicInsert
+//@DynamicUpdate
+//@Table(name = "BoardJPA")
 public class Board1 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
