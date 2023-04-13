@@ -6,6 +6,8 @@
 
 <body th:align="center">
 <h1>게시글 상세</h1>
+<form th:action="@{updateBoard}" method="post">
+<input>
 <table th:align="center" border="1" style="border-collapse: collapse;">
 	<tr>
 		<td bgcolor="orange" th:text="제목" width="80"></td>
@@ -28,6 +30,8 @@
 		<td th:text="${board.cnt}"></td>
 	</tr>
 </table>
+</form>
+<a th:href="@{/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;
 <a th:href="@{/getBoardList}">글목록</a>
 </body>
 </html>

@@ -24,19 +24,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void insertBoard() {
-		for (int i = 1; i <= 10; i++) {
-			Board board = new Board();
-			board.setTitle("제목"+i);
-			board.setWriter("작성자"+i);
-			board.setContent("내용"+i);
-			boardRepo.save(board);
-		}
+	public void insertBoard(Board board) {
+		boardRepo.save(board);
 	}
 
 	@Override
-	public Board getBoard(Long seq) {
-		return boardRepo.findById(seq).get();
+	public Board getBoard(Board board) {
+		return boardRepo.findById(board.getSeq()).get();
 	}
 
 	@Override

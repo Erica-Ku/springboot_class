@@ -33,16 +33,28 @@ public class BoardController {
 		model.addAttribute("boardList", list);
 	}
 	
-	@PostMapping("/board")
-	public void insertBoard() {
-		boardService.insertBoard();
+	@GetMapping("/getBoard")
+	public void getBoard(Model model, Board board) {
+		Board b = boardService.getBoard(board);
+		model.addAttribute("board", b);
 	}
 	
-	@GetMapping("/board/{seq}")
-	public Board getBoard(@PathVariable Long seq) {
-		Board board = boardService.getBoard(seq);
-		return board;
+	@GetMapping("/insertBoard")
+	public void insertBoardView() {
+		
 	}
+	
+	@PostMapping("/insertBoard")
+	public String insertBoard(Board board) {
+		boardService.insertBoard(board);
+		return "redirect:getBoardList";
+	}
+	
+//	@GetMapping("/board/{seq}")
+//	public Board getBoard(@PathVariable Long seq) {
+//		Board board = boardService.getBoard(seq);
+//		return board;
+//	}
 	
 	@PutMapping("/board")
 	public Board updateBoard(Board board) {

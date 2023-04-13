@@ -8,9 +8,9 @@ public interface BoardService {
 	
 	List<Board> getBoardList(Board board);
 	
-	void insertBoard();
+	void insertBoard(Board board);
 	
-	Board getBoard(Long seq);
+	Board getBoard(Board board);
 	
 	Board updateBoard(Board board);
 	
