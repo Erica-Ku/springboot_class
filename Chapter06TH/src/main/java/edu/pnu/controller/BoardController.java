@@ -50,26 +50,32 @@ public class BoardController {
 		return "redirect:getBoardList";
 	}
 	
+	@PostMapping("/updateBoard")
+	public String updateBoard(Board board) {
+		boardService.updateBoard(board);
+		return "forward:getBoardList";
+	}
+	
 //	@GetMapping("/board/{seq}")
 //	public Board getBoard(@PathVariable Long seq) {
 //		Board board = boardService.getBoard(seq);
 //		return board;
 //	}
 	
-	@PutMapping("/board")
-	public Board updateBoard(Board board) {
-		Board b = boardService.updateBoard(board);
-		return b;
-	}
+//	@PutMapping("/board")
+//	public Board updateBoard(Board board) {
+//		Board b = boardService.updateBoard(board);
+//		return b;
+//	}
 	
-	@DeleteMapping("/board/{seq}")
-	public void deleteBoard(@PathVariable Long seq) {
-		boardService.deleteBoard(seq);
-	}
+//	@DeleteMapping("/board/{seq}")
+//	public void deleteBoard(@PathVariable Long seq) {
+//		boardService.deleteBoard(seq);
+//	}
 	
-	@GetMapping("/hello")
-	public String hello(Model model) {
-		model.addAttribute("greeting", "Hello 타임리프~~");
-		return "hello";
-	}
+//	@GetMapping("/hello")
+//	public String hello(Model model) {
+//		model.addAttribute("greeting", "Hello 타임리프~~");
+//		return "hello";
+//	}
 }
