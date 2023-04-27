@@ -53,15 +53,24 @@ public class BoardRepositoryTest {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void testGetBoard() {
 		Board board = boardRepo.findById(1L).get();
 		
 		System.out.println("[" + board.getSeq() + "번 게시글 상세 정보 ]");
 		System.out.println("제목\t : " + board.getTitle());
-		System.out.println("[" + board.getSeq() + "번 게시글 상세 정보 ]");
-		System.out.println("[" + board.getSeq() + "번 게시글 상세 정보 ]");
-		System.out.println("[" + board.getSeq() + "번 게시글 상세 정보 ]");
-		System.out.println("[" + board.getSeq() + "번 게시글 상세 정보 ]");
+		System.out.println("작성자\t : " + board.getMember().getName());
+		System.out.println("내용\t : " + board.getContent());
+		System.out.println("등록일\t : " + board.getCreateDate());
+		System.out.println("조회수\t : " + board.getCnt());
+	}
+	
+	@Test
+	public void testGetBoardList() {
+		Member member = memberRepo.findById("member").get();
+		System.out.println("[" + member.getName() + "가 등록한 게시글 ]");
+		for (Board board : member.getBoardList()) {
+			System.out.println("---> " + board.toString());
+		}
 	}
 }
