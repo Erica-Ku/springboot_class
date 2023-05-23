@@ -125,6 +125,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="D:\minji\usefulcodes\BE_test"/>
 			<item value="D:\minji\WorkerSafety\BE"/>
 			<item value="C:\Users\SW\Desktop\tf2\BoardWeb_1.zip"/>
 		</list>
